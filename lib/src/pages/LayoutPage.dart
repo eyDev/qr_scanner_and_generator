@@ -1,11 +1,14 @@
-import 'package:eydev_qr_scanner_and_generator/src/models/ScanBloc.dart';
+import 'package:eydev_qr_scanner_and_generator/src/data/ScanBloc.dart';
 import 'package:eydev_qr_scanner_and_generator/src/models/ScanModel.dart';
 import 'package:eydev_qr_scanner_and_generator/src/pages/QRGeneratorPage.dart';
 import 'package:eydev_qr_scanner_and_generator/src/pages/QRScanPage.dart';
 import 'package:eydev_qr_scanner_and_generator/src/widgets/AfterScanDialog.dart';
-import 'package:eydev_qr_scanner_and_generator/src/widgets/CustomSnackBar.dart';
+import 'package:eydev_qr_scanner_and_generator/src/widgets/SearchDelegate.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class LayoutPage extends StatefulWidget {
   const LayoutPage({Key? key}) : super(key: key);
@@ -22,17 +25,19 @@ class _LayoutPageState extends State<LayoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: Icon(Icons.delete),
           onPressed: () => _deleteDialog(context),
         ),
-        title: Center(
-          child: Text(
-            'eydev - QR app',
-          ),
-        ),
+        title: Text('eydev - QR app'),
         actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => showSearch(
+              context: context,
+              delegate: DataSearch(),
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.qr_code_scanner),
             onPressed: () => _scanQR(context),
@@ -47,7 +52,6 @@ class _LayoutPageState extends State<LayoutPage> {
             _currentIndex = index;
           });
         },
-        fixedColor: Theme.of(context).accentColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.qr_code_scanner_outlined),
@@ -59,19 +63,15 @@ class _LayoutPageState extends State<LayoutPage> {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
     );
   }
 
   Future<void> _scanQR(BuildContext context) async {
-    try {
-      final String scannedQR = await FlutterBarcodeScanner.scanBarcode('#6875f5', 'Cancelar', true, ScanMode.QR);
-      if (scannedQR != '-1') {
-        db.scNewScan(ScanModel(data: scannedQR));
-        showAfterScan(context, scannedQR);
-      }
-    } catch (e) {
-      customSnackBar(context, 'Hubo un problema al escanear el código qr, inténtelo denuevo.');
+    await Permission.camera.request();
+    String? scanResult = await scanner.scan();
+    if (scanResult != null) {
+      db.scNewScan(ScanModel(data: scanResult));
+      showAfterScan(context, scanResult);
     }
   }
 

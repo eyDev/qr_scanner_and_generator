@@ -1,3 +1,4 @@
+import 'package:eydev_qr_scanner_and_generator/src/data/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -9,6 +10,7 @@ class QRGeneratorPage extends StatefulWidget {
 }
 
 class _QRGeneratorPageState extends State<QRGeneratorPage> {
+  final Constants _constants = Constants();
   String _data = '';
   double _sliderValue = 1;
 
@@ -37,11 +39,11 @@ class _QRGeneratorPageState extends State<QRGeneratorPage> {
         },
         keyboardType: TextInputType.multiline,
         decoration: InputDecoration(
-          icon: Icon(Icons.qr_code_2, color: Theme.of(context).accentColor),
+          icon: Icon(Icons.qr_code_2, color: _constants.primaryColor),
           hintText: 'Código QR',
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+            borderSide: BorderSide(color: _constants.bgColor, width: 2.0),
           ),
         ),
       ),
@@ -66,7 +68,8 @@ class _QRGeneratorPageState extends State<QRGeneratorPage> {
 
   Widget _createSlider() {
     return Slider(
-      activeColor: Theme.of(context).accentColor,
+      activeColor: _constants.primaryColor,
+      inactiveColor: _constants.bgColor,
       value: _sliderValue,
       min: 0.3,
       max: 1,

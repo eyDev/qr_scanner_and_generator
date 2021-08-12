@@ -51,4 +51,16 @@ class DBConnection {
     final int res = await db.rawDelete("DELETE FROM Scans");
     return res;
   }
+
+  Future<List<ScanModel>> searchScans(query) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> res = await db.query(
+      'Scans',
+      where: 'data LIKE ?',
+      whereArgs: ["%$query%"],
+    );
+
+    List<ScanModel> list = res.isNotEmpty ? res.map((s) => ScanModel.fromJson(s)).toList() : [];
+    return list;
+  }
 }

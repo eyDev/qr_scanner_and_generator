@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eydev_qr_scanner_and_generator/src/models/DBConnection.dart';
+import 'package:eydev_qr_scanner_and_generator/src/data/DBConnection.dart';
 import 'package:eydev_qr_scanner_and_generator/src/models/ScanModel.dart';
 
 class ScansBloc {

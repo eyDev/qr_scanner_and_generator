@@ -1,9 +1,11 @@
+import 'package:eydev_qr_scanner_and_generator/src/data/Constants.dart';
 import 'package:eydev_qr_scanner_and_generator/src/widgets/CustomSnackBar.dart';
 import 'package:eydev_qr_scanner_and_generator/src/widgets/LaunchUrl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void showAfterScan(BuildContext context, String value) {
+  final Constants _constants = Constants();
   showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -15,7 +17,7 @@ void showAfterScan(BuildContext context, String value) {
         content: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            border: Border.symmetric(horizontal: BorderSide(color: Theme.of(context).primaryColor)),
+            border: Border.symmetric(horizontal: BorderSide(color: _constants.bgColor)),
           ),
           child: Text(
             value,
@@ -33,7 +35,7 @@ void showAfterScan(BuildContext context, String value) {
                 },
                 child: Text(
                   'Cerrar',
-                  style: TextStyle(color: Theme.of(context).accentColor),
+                  style: TextStyle(color: _constants.primaryColor),
                 ),
               ),
               TextButton(
@@ -45,7 +47,7 @@ void showAfterScan(BuildContext context, String value) {
                 },
                 child: Text(
                   'Copiar',
-                  style: TextStyle(color: Theme.of(context).accentColor),
+                  style: TextStyle(color: _constants.primaryColor),
                 ),
               ),
               TextButton(
@@ -55,7 +57,7 @@ void showAfterScan(BuildContext context, String value) {
                 },
                 child: Text(
                   'Abrir',
-                  style: TextStyle(color: Theme.of(context).accentColor),
+                  style: TextStyle(color: _constants.primaryColor),
                 ),
               ),
             ],
